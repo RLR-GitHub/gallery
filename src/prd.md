@@ -1,106 +1,96 @@
-# Portfolio Gallery - Product Requirements Document
+# Live Portfolio Gallery - PRD
 
 ## Core Purpose & Success
-- **Mission Statement**: Create an elegant, interactive portfolio gallery showcasing Roderick L. Renwick's comprehensive work across Computer Vision, Machine Learning, and Engineering domains.
-- **Success Indicators**: Visitors can efficiently navigate and discover projects across 7 distinct categories, understanding the breadth and depth of technical expertise.
-- **Experience Qualities**: Professional, Interactive, Comprehensive
+- **Mission Statement**: Create an immersive portfolio gallery that showcases Roderick L. Renwick's technical work through live, interactive previews of web projects.
+- **Success Indicators**: Users can instantly see live previews of projects without leaving the gallery, improving engagement and project understanding.
+- **Experience Qualities**: Immersive, Interactive, Professional
 
 ## Project Classification & Approach
-- **Complexity Level**: Light Application (multiple features with state management)
-- **Primary User Activity**: Consuming and Interacting (browsing portfolio projects)
+- **Complexity Level**: Light Application (multiple features with dynamic iframe loading and state management)
+- **Primary User Activity**: Consuming and Interacting - users browse and preview projects in real-time
 
 ## Thought Process for Feature Selection
-- **Core Problem Analysis**: Need to present 26 diverse technical projects in an organized, visually appealing manner that demonstrates progression from foundational work to comprehensive applications.
-- **User Context**: Potential employers, collaborators, and technical peers exploring work quality and range.
-- **Critical Path**: Header introduction → Category filtering → Project exploration → Contact/links
-- **Key Moments**: Category filtering interactions, project card hover effects, seamless navigation between project types
+- **Core Problem Analysis**: Traditional portfolio galleries only show static screenshots or require users to navigate away to see actual projects
+- **User Context**: Technical recruiters, potential collaborators, and fellow engineers who want to quickly assess project quality
+- **Critical Path**: Browse categories → Preview projects in real-time → Visit full projects when interested
+- **Key Moments**: 
+  1. First impression with live preview loading
+  2. Seamless category filtering with maintained preview states
+  3. Smooth transition from preview to full project visit
 
 ## Essential Features
 
-### Interactive Category Filtering
-- **What it does**: Allows users to filter 26 projects across 7 categories (Comprehensive, Interactive, Professional, Foundation, Hardware, Software, GitHub)
-- **Why it matters**: Enables focused exploration of specific technical domains
-- **Success criteria**: Smooth animations, accurate filtering, clear active states
+### Live Preview System
+- **What it does**: Embeds live websites as scaled-down iframe previews within each project card
+- **Why it matters**: Allows immediate assessment of project quality and functionality without navigation
+- **Success criteria**: Previews load within 8 seconds, graceful error handling for failed loads
 
-### Project Card System
-- **What it does**: Displays project previews with metadata, descriptions, and direct links
-- **Why it matters**: Provides comprehensive project information at a glance
-- **Success criteria**: Consistent layout, readable content, engaging hover effects
+### Category-Based Organization
+- **What it does**: Organizes 26 projects across 7 categories (Comprehensive, Interactive, Professional, Foundation, Hardware, Software, GitHub)
+- **Why it matters**: Enables focused exploration based on user interests and technical domains
+- **Success criteria**: Smooth filtering animations, maintained preview states during category changes
 
-### Professional Header
-- **What it does**: Introduces Roderick with title and contact links
-- **Why it matters**: Establishes professional identity and provides immediate contact options
-- **Success criteria**: Clear branding, accessible contact methods
+### Lazy Loading & Performance
+- **What it does**: Only loads iframe previews when cards come into viewport
+- **Why it matters**: Prevents overwhelming network requests and improves initial load performance
+- **Success criteria**: Intersection Observer triggers preview loading 200px before viewport entry
+
+### Error Handling & Retry
+- **What it does**: Displays fallback states for failed iframe loads with retry functionality
+- **Why it matters**: Maintains professional appearance even when external sites have issues
+- **Success criteria**: Clear error indication, functional retry mechanism, graceful degradation
 
 ## Design Direction
 
 ### Visual Tone & Identity
-- **Emotional Response**: Professional confidence, technical sophistication, approachable expertise
-- **Design Personality**: Modern, sleek, slightly futuristic with cyberpunk undertones
-- **Visual Metaphors**: Digital interfaces, technology grids, glassmorphic surfaces
-- **Simplicity Spectrum**: Rich interface with sophisticated details that don't overwhelm content
+- **Emotional Response**: Professional confidence with cutting-edge technical sophistication
+- **Design Personality**: Sleek, modern, and technically impressive - reflecting the subject's expertise
+- **Visual Metaphors**: Glass morphism suggests transparency and depth, live previews represent active engagement
+- **Simplicity Spectrum**: Rich interface that showcases technical complexity while maintaining clean organization
 
 ### Color Strategy
-- **Color Scheme Type**: Custom palette with gradient combinations
-- **Primary Color**: Deep purple-blue gradient (#667eea to #764ba2) - represents innovation and technical depth
-- **Secondary Colors**: Complementary gradients for different categories (green for interactive, cyan for professional, etc.)
-- **Accent Color**: Bright highlights for hover states and CTAs
-- **Color Psychology**: Dark backgrounds convey professionalism, gradients suggest innovation
-- **Color Accessibility**: High contrast text on dark backgrounds, WCAG AA compliant
-- **Foreground/Background Pairings**: 
-  - Background (#0a0e1a) with Primary text (#e8ecf5) - 15.8:1 ratio
-  - Card backgrounds (rgba(255,255,255,0.03)) with Primary text - 14.2:1 ratio
-  - Button backgrounds with white text - 4.5:1+ ratio
+- **Color Scheme Type**: Sophisticated dark theme with accent gradients
+- **Primary Color**: Purple-blue gradient (oklch(0.65 0.15 260)) - suggesting innovation and technical depth
+- **Secondary Colors**: Category-specific gradients for visual organization
+- **Accent Color**: Live green indicators for active previews
+- **Color Psychology**: Dark backgrounds reduce eye strain during technical review, colored accents provide clear categorization
+- **Foreground/Background Pairings**: White text on dark backgrounds (>7:1 contrast), colored badges on semi-transparent backgrounds
 
 ### Typography System
-- **Font Pairing Strategy**: Single modern sans-serif family with varied weights
-- **Typographic Hierarchy**: Large gradient titles (3em) → Subtitles (1.3em) → Body (0.95em) → Tags (0.8em)
-- **Font Personality**: Clean, technical, highly legible
-- **Readability Focus**: Generous line heights (1.6), proper contrast ratios
-- **Typography Consistency**: Consistent sizing system across all text elements
-- **Which fonts**: System fonts (-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto) for performance and consistency
-- **Legibility Check**: High contrast ratios ensure readability on dark backgrounds
+- **Font Pairing Strategy**: System fonts for optimal performance and consistent rendering across devices
+- **Typographic Hierarchy**: Bold project titles, subtle descriptions, micro-copy for technical details
+- **Font Personality**: Clean, technical, and highly legible for professional audiences
+- **Readability Focus**: Optimized for quick scanning and technical content consumption
 
 ### Visual Hierarchy & Layout
-- **Attention Direction**: Header → Filter controls → Project grid → Stats
-- **White Space Philosophy**: Generous spacing creates breathing room and focuses attention
-- **Grid System**: Responsive CSS Grid with auto-fill columns (min 380px)
-- **Responsive Approach**: Mobile-first with graceful degradation
-- **Content Density**: Balanced information presentation without overwhelming users
+- **Attention Direction**: Live preview thumbnails draw immediate attention, followed by project titles and descriptions
+- **White Space Philosophy**: Generous spacing around cards to prevent cognitive overload
+- **Grid System**: Responsive grid adapts from 1-4 columns based on screen size
+- **Responsive Approach**: Mobile-first with enhanced desktop features
+- **Content Density**: Balanced to show sufficient projects while maintaining detail visibility
 
 ### Animations
-- **Purposeful Meaning**: Smooth transitions reinforce interactivity and premium feel
-- **Hierarchy of Movement**: Card hover effects > filter transitions > button interactions
-- **Contextual Appropriateness**: Subtle but satisfying micro-interactions enhance usability
+- **Purposeful Meaning**: Loading states communicate active processing, hover effects suggest interactivity
+- **Hierarchy of Movement**: Subtle card hover elevations, smooth category transitions, live preview loading indicators
+- **Contextual Appropriateness**: Professional animations that enhance rather than distract from technical content
 
 ### UI Elements & Component Selection
-- **Component Usage**: Cards for projects, buttons for filters, badges for categories
-- **Component Customization**: Glassmorphic cards with backdrop blur effects
-- **Component States**: Hover, active, and focus states for all interactive elements
-- **Icon Selection**: Emoji placeholders with potential for phosphor-icons integration
-- **Component Hierarchy**: Primary (project cards) > Secondary (filter buttons) > Tertiary (stats)
-- **Spacing System**: Consistent 20px, 30px, 40px spacing rhythm
-- **Mobile Adaptation**: Single column layout on mobile, stacked stats
-
-### Visual Consistency Framework
-- **Design System Approach**: Component-based with consistent theming
-- **Style Guide Elements**: Color variables, border radius, shadow systems
-- **Visual Rhythm**: Consistent spacing and sizing relationships
-- **Brand Alignment**: Professional tech aesthetic with creative flair
-
-### Accessibility & Readability
-- **Contrast Goal**: WCAG AA compliance minimum (4.5:1 for normal text, 3:1 for large text)
+- **Component Usage**: shadcn Card components for consistent styling, Badge components for categorization
+- **Component States**: Loading, error, success states for live previews with appropriate visual feedback
+- **Icon Selection**: Phosphor icons for external links and retry actions
+- **Component Hierarchy**: Preview takes visual precedence, followed by title, then metadata
+- **Mobile Adaptation**: Single-column layout on mobile with maintained preview functionality
 
 ## Edge Cases & Problem Scenarios
-- **Loading States**: Graceful loading of project images and content
-- **Empty Categories**: Appropriate messaging when categories have no active projects
-- **Link Failures**: Fallback handling for external project links
-- **Mobile Performance**: Smooth interactions on touch devices
+- **iframe Loading Failures**: Comprehensive error handling with retry mechanism and fallback states
+- **Cross-Origin Issues**: Graceful degradation for sites that block iframe embedding
+- **Performance on Slow Connections**: Lazy loading and optimized iframe scaling prevent overwhelming slow networks
+- **Mobile Interaction**: Disabled pointer events on previews prevent accidental navigation on mobile
 
 ## Implementation Considerations
-- **Scalability Needs**: Easy addition of new projects and categories
-- **Testing Focus**: Cross-browser compatibility, responsive behavior
-- **Critical Questions**: Performance with many DOM elements, smooth animations
+- **Scalability Needs**: New projects can be easily added to the projects array with automatic preview integration
+- **Testing Focus**: Cross-browser iframe compatibility, performance with multiple simultaneous previews
+- **Critical Questions**: How to handle sites that change their iframe policies, balance between preview quality and performance
 
 ## Reflection
-This approach creates a sophisticated showcase that balances comprehensive content presentation with elegant user experience. The category-based organization allows for both broad overview and focused exploration, while the rich visual design establishes technical credibility and creative capability.
+This approach uniquely combines traditional portfolio browsing with live web application previews, creating an immersive experience that immediately demonstrates the quality and functionality of technical projects. The implementation showcases both the subject's technical work and the sophistication of the gallery system itself.

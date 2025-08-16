@@ -116,10 +116,59 @@
   }
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 .animate-shimmer {
   animation: shimmer 2s infinite;
 }
 
 .animate-fade-in-scale {
   animation: fadeInScale 0.5s ease forwards;
+}
+
+/* Live preview iframe styles */
+.live-preview-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+}
+
+.live-preview-iframe {
+  transform-origin: top left;
+  border: none;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Loading spinner for iframe previews */
+.preview-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Enhanced card hover effects for previews */
+.project-card:hover .live-preview-iframe {
+  transform: scale(0.188) translateY(-2px);
+}
+
+/* Error overlay styles */
+.preview-error-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+/* Live indicator pulse animation */
+.live-indicator-dot {
+  animation: pulse 2s infinite;
 }

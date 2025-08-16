@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink } from '@phosphor-icons/react';
+import { ExternalLink, ArrowClockwise } from '@phosphor-icons/react';
 
 interface Project {
   id: string;
@@ -12,6 +12,8 @@ interface Project {
   emoji: string;
   techStack: string[];
   link: string;
+  previewUrl?: string; // Optional separate preview URL
+  hasInteractivePreview?: boolean; // Flag for iframe-compatible sites
 }
 
 const projects: Project[] = [
@@ -23,7 +25,8 @@ const projects: Project[] = [
     category: 'comprehensive',
     emoji: '📊',
     techStack: ['Data Viz', 'Analytics'],
-    link: 'https://rory.software/app1/'
+    link: 'https://rory.software/app1/',
+    hasInteractivePreview: true
   },
   {
     id: 'application-ecosystem',
@@ -32,7 +35,8 @@ const projects: Project[] = [
     category: 'comprehensive',
     emoji: '🌐',
     techStack: ['Hub', 'Navigation'],
-    link: 'https://www.rodericklrenwick.com/'
+    link: 'https://www.rodericklrenwick.com/',
+    hasInteractivePreview: true
   },
   {
     id: 'readme',
@@ -41,7 +45,8 @@ const projects: Project[] = [
     category: 'comprehensive',
     emoji: '📖',
     techStack: ['Documentation', 'Overview'],
-    link: 'https://github.com/RLR-GitHub/RLR-GitHub'
+    link: 'https://github.com/RLR-GitHub/RLR-GitHub',
+    hasInteractivePreview: true
   },
   {
     id: 'portfolio',
@@ -50,7 +55,8 @@ const projects: Project[] = [
     category: 'comprehensive',
     emoji: '🚀',
     techStack: ['CV & ML', 'Portfolio'],
-    link: 'https://rlr-github.github.io/'
+    link: 'https://rlr-github.github.io/',
+    hasInteractivePreview: true
   },
   // INTERACTIVE Projects (4 cards)
   {
@@ -60,7 +66,8 @@ const projects: Project[] = [
     category: 'interactive',
     emoji: '🎮',
     techStack: ['Creative', 'Interactive'],
-    link: 'https://rory.computer/'
+    link: 'https://rory.computer/',
+    hasInteractivePreview: true
   },
   {
     id: 'hacker-terminal-resume',
@@ -69,7 +76,8 @@ const projects: Project[] = [
     category: 'interactive',
     emoji: '💻',
     techStack: ['Interactive UI', 'CLI'],
-    link: 'https://rory.engineer/__A1__HACKER_TERMINAL_RESUME.html'
+    link: 'https://rory.engineer/__A1__HACKER_TERMINAL_RESUME.html',
+    hasInteractivePreview: true
   },
   {
     id: 'energy-visualization',
@@ -78,7 +86,8 @@ const projects: Project[] = [
     category: 'interactive',
     emoji: '🔮',
     techStack: ['Three.js', 'WebGL'],
-    link: 'https://rory.engineer/__A1__abstract_energy_visualization.html'
+    link: 'https://rory.engineer/__A1__abstract_energy_visualization.html',
+    hasInteractivePreview: true
   },
   {
     id: 'skills-nebula',
@@ -87,7 +96,8 @@ const projects: Project[] = [
     category: 'interactive',
     emoji: '🌌',
     techStack: ['D3.js', 'Visualization'],
-    link: 'https://rory.engineer/__A1__skills_nebula.html'
+    link: 'https://rory.engineer/__A1__skills_nebula.html',
+    hasInteractivePreview: true
   },
   // PROFESSIONAL Projects (2 cards)
   {
@@ -97,7 +107,8 @@ const projects: Project[] = [
     category: 'professional',
     emoji: '📄',
     techStack: ['Resume', 'CV'],
-    link: 'https://rlr-github.github.io/2025resume.html'
+    link: 'https://rlr-github.github.io/2025resume.html',
+    hasInteractivePreview: true
   },
   {
     id: 'featured-projects',
@@ -106,7 +117,8 @@ const projects: Project[] = [
     category: 'professional',
     emoji: '📌',
     techStack: ['Current', 'Featured'],
-    link: 'https://rlr-github.github.io/2025portfolio.html'
+    link: 'https://rlr-github.github.io/2025portfolio.html',
+    hasInteractivePreview: true
   },
   // FOUNDATION Projects (2 cards)
   {
@@ -116,7 +128,8 @@ const projects: Project[] = [
     category: 'foundation',
     emoji: '🎓',
     techStack: ['Origin Story', 'Legacy'],
-    link: 'https://www.r0ry.com/'
+    link: 'https://www.r0ry.com/',
+    hasInteractivePreview: true
   },
   {
     id: 'neural-network-theory',
@@ -125,7 +138,8 @@ const projects: Project[] = [
     category: 'foundation',
     emoji: '📚',
     techStack: ['Theory', 'Mathematics'],
-    link: 'https://www.r0ry.com/html/class_notes.html'
+    link: 'https://www.r0ry.com/html/class_notes.html',
+    hasInteractivePreview: true
   },
   // HARDWARE Projects (4 cards)
   {
@@ -135,7 +149,8 @@ const projects: Project[] = [
     category: 'hardware',
     emoji: '🔧',
     techStack: ['VHDL', 'FPGA'],
-    link: 'https://www.r0ry.com/html/vhdl_mlp.html'
+    link: 'https://www.r0ry.com/html/vhdl_mlp.html',
+    hasInteractivePreview: true
   },
   {
     id: 'smart-cat-door',
@@ -144,7 +159,8 @@ const projects: Project[] = [
     category: 'hardware',
     emoji: '🐱',
     techStack: ['Deep Learning', 'IoT'],
-    link: 'https://www.r0ry.com/html/smart_cat_door.html'
+    link: 'https://www.r0ry.com/html/smart_cat_door.html',
+    hasInteractivePreview: true
   },
   {
     id: 'smart-parking',
@@ -153,7 +169,8 @@ const projects: Project[] = [
     category: 'hardware',
     emoji: '🚗',
     techStack: ['CNN', 'Full-Stack'],
-    link: 'https://www.r0ry.com/html/park_smart.html'
+    link: 'https://www.r0ry.com/html/park_smart.html',
+    hasInteractivePreview: true
   },
   {
     id: 'vlsi-alu',
@@ -162,7 +179,8 @@ const projects: Project[] = [
     category: 'hardware',
     emoji: '📐',
     techStack: ['VLSI', 'CMOS'],
-    link: 'https://www.r0ry.com/html/vlsi_design.html'
+    link: 'https://www.r0ry.com/html/vlsi_design.html',
+    hasInteractivePreview: true
   },
   // SOFTWARE Projects (4 cards)
   {
@@ -172,7 +190,8 @@ const projects: Project[] = [
     category: 'software',
     emoji: '🎨',
     techStack: ['Generative AI', 'Python'],
-    link: 'https://www.r0ry.com/html/remy_gans.html'
+    link: 'https://www.r0ry.com/html/remy_gans.html',
+    hasInteractivePreview: true
   },
   {
     id: 'mlp-sw-python',
@@ -181,7 +200,8 @@ const projects: Project[] = [
     category: 'software',
     emoji: '🧠',
     techStack: ['Python', 'Neural Networks'],
-    link: 'https://github.com/RLR-GitHub/ECE370/blob/main/README.md'
+    link: 'https://github.com/RLR-GitHub/ECE370/blob/main/README.md',
+    hasInteractivePreview: true
   },
   {
     id: 'pca-tsne',
@@ -190,7 +210,8 @@ const projects: Project[] = [
     category: 'software',
     emoji: '📉',
     techStack: ['C++', 'MatLab'],
-    link: 'https://www.r0ry.com/html/more_computer_vision_projects.html'
+    link: 'https://www.r0ry.com/html/more_computer_vision_projects.html',
+    hasInteractivePreview: true
   },
   {
     id: 'cv-excursions',
@@ -199,7 +220,8 @@ const projects: Project[] = [
     category: 'software',
     emoji: '🔬',
     techStack: ['Classical CV', 'Algorithms'],
-    link: 'https://www.r0ry.com/html/more_computer_vision_projects.html'
+    link: 'https://www.r0ry.com/html/more_computer_vision_projects.html',
+    hasInteractivePreview: true
   },
   // GITHUB Projects (4 cards)
   {
@@ -209,7 +231,8 @@ const projects: Project[] = [
     category: 'github',
     emoji: '🤖',
     techStack: ['Python', 'PyTorch'],
-    link: 'https://github.com/RLR-GitHub/RemyWGAN-GP'
+    link: 'https://github.com/RLR-GitHub/RemyWGAN-GP',
+    hasInteractivePreview: true
   },
   {
     id: 'github-vhdl-mlp',
@@ -218,7 +241,8 @@ const projects: Project[] = [
     category: 'github',
     emoji: '💻',
     techStack: ['VHDL', 'Hardware'],
-    link: 'https://github.com/RLR-GitHub/MultilayerPerceptron'
+    link: 'https://github.com/RLR-GitHub/MultilayerPerceptron',
+    hasInteractivePreview: true
   },
   {
     id: 'github-vlsi',
@@ -227,7 +251,8 @@ const projects: Project[] = [
     category: 'github',
     emoji: '⚡',
     techStack: ['VLSI', 'CMOS'],
-    link: 'https://github.com/RLR-GitHub/ECE375/blob/main/ALU_TwoBit.PNG'
+    link: 'https://github.com/RLR-GitHub/ECE375/blob/main/ALU_TwoBit.PNG',
+    hasInteractivePreview: false // Image file, not iframe-compatible
   },
   {
     id: 'github-advanced-methods',
@@ -236,7 +261,8 @@ const projects: Project[] = [
     category: 'github',
     emoji: '👁️',
     techStack: ['Python', 'C++'],
-    link: 'https://github.com/RLR-GitHub/ECE270'
+    link: 'https://github.com/RLR-GitHub/ECE270',
+    hasInteractivePreview: true
   }
 ];
 
@@ -260,6 +286,150 @@ const categoryBadgeStyles = {
   software: 'bg-gradient-to-r from-blue-500 to-blue-700',
   github: 'bg-gradient-to-r from-gray-600 to-gray-800'
 };
+
+// Project Preview Component with iframe functionality
+function ProjectPreview({ project }: { project: Project }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isInView, setIsInView] = useState(false);
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer for lazy loading
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isInView) {
+          setIsInView(true);
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (previewRef.current) {
+      observer.observe(previewRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isInView]);
+
+  // Handle iframe load
+  const handleIframeLoad = () => {
+    setIsLoading(false);
+    setHasError(false);
+  };
+
+  // Handle iframe error with timeout
+  useEffect(() => {
+    if (!isInView || !project.hasInteractivePreview) return;
+
+    const timer = setTimeout(() => {
+      if (isLoading && iframeRef.current) {
+        setHasError(true);
+        setIsLoading(false);
+      }
+    }, 8000);
+
+    return () => clearTimeout(timer);
+  }, [isLoading, isInView, project.hasInteractivePreview]);
+
+  // Retry loading
+  const handleRetry = () => {
+    setIsLoading(true);
+    setHasError(false);
+    setRetryCount(prev => prev + 1);
+    
+    if (iframeRef.current) {
+      // Force reload by changing src with timestamp
+      const url = new URL(project.link);
+      url.searchParams.set('t', Date.now().toString());
+      iframeRef.current.src = url.toString();
+    }
+  };
+
+  // Don't show iframe for non-interactive projects
+  if (!project.hasInteractivePreview) {
+    return (
+      <div className="relative h-48 bg-gradient-to-br from-muted/20 to-muted/40 flex items-center justify-center">
+        <div className="text-6xl opacity-60 group-hover:scale-110 transition-transform duration-300">
+          {project.emoji}
+        </div>
+        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+      </div>
+    );
+  }
+
+  return (
+    <div ref={previewRef} className="relative h-48 bg-gradient-to-br from-muted/20 to-muted/40 overflow-hidden">
+      {/* Loading State */}
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted/10 z-20">
+          <div className="flex flex-col items-center gap-2">
+            <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+            <span className="text-xs text-muted-foreground">Loading preview...</span>
+          </div>
+        </div>
+      )}
+
+      {/* Error State */}
+      {hasError && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 z-20 text-center p-4">
+          <div className="text-white mb-2">
+            <span className="text-2xl block mb-1">⚠️</span>
+            <span className="text-sm">Preview unavailable</span>
+          </div>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleRetry}
+            className="text-xs bg-white/90 hover:bg-white text-black border-0"
+          >
+            <ArrowClockwise size={12} className="mr-1" />
+            Retry
+          </Button>
+        </div>
+      )}
+
+      {/* Iframe Preview */}
+      {isInView && (
+        <iframe
+          ref={iframeRef}
+          src={project.link}
+          title={project.title}
+          className={`w-full h-full transform origin-top-left transition-opacity duration-300 ${
+            isLoading || hasError ? 'opacity-0' : 'opacity-100'
+          }`}
+          style={{
+            width: '1280px',
+            height: '1024px',
+            transform: 'scale(0.1875)', // Precise scaling for 240px height container
+            pointerEvents: 'none'
+          }}
+          loading="lazy"
+          sandbox="allow-scripts allow-same-origin"
+          onLoad={handleIframeLoad}
+          onError={() => {
+            setHasError(true);
+            setIsLoading(false);
+          }}
+        />
+      )}
+
+      {/* Fallback emoji display when no iframe */}
+      {!isInView && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-6xl opacity-60 group-hover:scale-110 transition-transform duration-300">
+            {project.emoji}
+          </div>
+        </div>
+      )}
+
+      {/* Shimmer Effect */}
+      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+    </div>
+  );
+}
 
 function App() {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -290,7 +460,7 @@ function App() {
                 RODERICK L. RENWICK
               </h1>
               <p className="text-xl text-muted-foreground mb-8 font-light">
-                Computer Vision & Machine Learning Engineer
+                Computer Vision & Machine Learning Engineer - Live Portfolio Gallery
               </p>
               <div className="flex justify-center gap-4 flex-wrap">
                 {[
@@ -346,21 +516,26 @@ function App() {
               className="glass-card glass-hover border-border/50 overflow-hidden group cursor-pointer animate-fade-in-scale"
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              {/* Project Preview */}
-              <div className="relative h-48 bg-gradient-to-br from-muted/20 to-muted/40 flex items-center justify-center">
-                <div className="text-6xl opacity-60 group-hover:scale-110 transition-transform duration-300">
-                  {project.emoji}
-                </div>
-                
-                {/* Shimmer Effect */}
-                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+              {/* Project Preview with iframe */}
+              <div className="relative">
+                <ProjectPreview project={project} />
                 
                 {/* Category Badge */}
                 <Badge 
-                  className={`absolute top-3 right-3 ${categoryBadgeStyles[project.category as keyof typeof categoryBadgeStyles]} text-white border-0 font-semibold text-xs uppercase tracking-wider`}
+                  className={`absolute top-3 right-3 ${categoryBadgeStyles[project.category as keyof typeof categoryBadgeStyles]} text-white border-0 font-semibold text-xs uppercase tracking-wider z-10`}
                 >
                   {project.category}
                 </Badge>
+
+                {/* Live Preview Indicator */}
+                {project.hasInteractivePreview && (
+                  <div className="absolute top-3 left-3 z-10">
+                    <Badge className="bg-green-500/80 text-white border-0 text-xs flex items-center gap-1">
+                      <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse" />
+                      Live
+                    </Badge>
+                  </div>
+                )}
               </div>
 
               {/* Project Info */}
