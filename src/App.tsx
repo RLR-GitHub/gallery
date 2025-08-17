@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, ArrowClockwise } from '@phosphor-icons/react';
+import LaunchPage from './components/LaunchPage';
 
 interface Project {
   id: string;
@@ -432,6 +433,7 @@ function ProjectPreview({ project }: { project: Project }) {
 }
 
 function App() {
+  const [showLaunchPage, setShowLaunchPage] = useState(true);
   const [activeCategory, setActiveCategory] = useState('all');
 
   const filteredProjects = activeCategory === 'all' 
@@ -441,6 +443,11 @@ function App() {
   const handleCategoryChange = (categoryId: string) => {
     setActiveCategory(categoryId);
   };
+
+  // Show launch page first, then gallery
+  if (showLaunchPage) {
+    return <LaunchPage onEnterGallery={() => setShowLaunchPage(false)} />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
